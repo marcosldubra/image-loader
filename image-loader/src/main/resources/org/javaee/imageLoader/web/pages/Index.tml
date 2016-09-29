@@ -1,0 +1,21 @@
+<html xmlns:t = "http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	t:type = "Layout" t:pageTitle = "title">
+
+<div class = "container">
+	<h2>Upload a new image</h2>
+	<t:form t:id = "uploadForm">
+		<t:errors/>
+		
+		<t:label for="fileName"/>
+		<input t:type = "textField" t:id = "fileName" t:value = "fileName" validate = "required"/>
+		<br/>
+		
+		<t:label for = "uploadedFile"/>
+		<input t:type = "upload" t:id = "uploadedFile" t:value = "uploadedFile" 
+			validate = "required"/>
+		<br/>
+		<input t:type = "Submit" t:value = "${message:upload}"/>
+	</t:form>
+</div>
+   
+</html>
