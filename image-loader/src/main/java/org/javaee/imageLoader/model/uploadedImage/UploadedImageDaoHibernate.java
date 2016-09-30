@@ -49,11 +49,6 @@ public class UploadedImageDaoHibernate extends GenericDaoHibernate<UploadedImage
 
 	@SuppressWarnings("unchecked")
 	public List<UploadedImage> getAllImages() {
-		/*List <UploadedImage> images = getSession().createQuery("SELECT u FROM UploadedImage u " +
-				"ORDER BY u.imageName").
-				setFirstResult(startIndex).
-				setMaxResults(count).
-				list();*/
 		List <UploadedImage> images = getSession().createQuery("SELECT u FROM UploadedImage u " +
 				"ORDER BY u.imageName").
 				list();

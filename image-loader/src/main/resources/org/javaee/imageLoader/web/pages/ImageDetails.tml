@@ -1,17 +1,16 @@
 <html xmlns:t = "http://tapestry.apache.org/schema/tapestry_5_3.xsd"
 	t:type = "Layout" t:pageTitle = "title">
 
-<div class = "container">
 	<h2>Update image</h2>
 	<t:form t:id = "updateForm">
 		<t:errors/>
 		
 		<t:label for="newFileName"/>
-		<input t:type = "textField" t:id = "newFileName" t:value = "newFileName" validate = "required"/>
+		<input t:type = "textField" t:id = "newFileName" t:value = "newFileName" validate = "required,regexp"/>
 		<br/>
 		
 		<input t:type = "Submit" t:value = "${message:update}"/>
+		<button><t:pageLink page = "Index">${message:close}</t:pageLink></button>
 	</t:form>
-</div>
    
 </html>

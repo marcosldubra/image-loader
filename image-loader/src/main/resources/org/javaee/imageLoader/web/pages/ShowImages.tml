@@ -2,9 +2,8 @@
 	xmlns:p="tapestry:parameter"
 	t:type="Layout" t:pageTitle="title">
 
-<div class = "container">
-	<h2>segundo encabezado</h2>
-	
+	<h2>Uploaded images</h2>
+	<br/>
 	<t:if test = "allImages">
 		<t:loop t:source = "allImages" t:value = "image">
 			<t:ImagesRow t:id="imagesRow" p:imageName = "image.imageName" 
@@ -14,6 +13,5 @@
 				<p>${message:noImages}</p>
        		</p:else>
 	</t:if>
-</div>
    
 </html>

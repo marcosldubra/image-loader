@@ -2,7 +2,7 @@ package org.javaee.imageLoader.web.pages;
 
 import java.io.File;
 
-import static org.javaee.imageLoader.web.pages.Index.DIRECTORY;
+import static org.javaee.imageLoader.model.util.NamesHandler.*;
 
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -39,26 +39,31 @@ public class ImageDetails {
 	private ShowImages showImages;
 		
 	public void onPrepareForRender() {
-		newFileName = savedImage.getImageName();
+		newFileName = removeFileNameFormat(savedImage.getImageName());
 	}
 	
 	public Object onValidateFromUpdateForm() {
         try {
         	//String uploadedFileName = uploadedFile.getFileName();
         	
-        	File oldFile = new File(DIRECTORY + savedImage.getImageName());
+        	String newFormatedName = addFileNameFormat(newFileName, savedImage.getImageName());
         	
-        	File updatedFile = new File(DIRECTORY + newFileName);
+        	File oldFile = new File(IMAGES_DIRECTORY + savedImage.getImageName());
+        	
+        	File updatedFile = new File(IMAGES_DIRECTORY + newFormatedName);
         	
         	if(updatedFile.exists()) {
         		updateForm.recordError(messages.get("alreadyExists"));
         		return this;
         	}
         	
-        	oldFile.renameTo(updatedFile);
+        	if (!newFormatedName.equals(savedImage.getImageName())) {
+        		oldFile.renameTo(updatedFile);
         	
-        	appServices.updateImage(uploadedImageId, newFileName, savedImage.getSource());
-        	        	
+        		appServices.updateImage(uploadedImageId, newFormatedName, savedImage.getSource());
+        	     
+        	}
+        	
         	return showImages;
         	
         } catch (DuplicatedImageNameException e) {

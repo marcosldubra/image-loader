@@ -13,9 +13,12 @@ import org.apache.tapestry5.upload.services.UploadedFile;
 import org.javaee.imageLoader.model.applicationServices.ApplicationServices;
 import org.javaee.imageLoader.model.applicationServices.DuplicatedImageNameException;
 
+import static  org.javaee.imageLoader.model.util.ImageResizer.resizeImage;
+import static org.javaee.imageLoader.model.util.NamesHandler.*;
+
+
+
 public class Index {
-	private final String PERMITTED_TYPE = "image";
-	public static final String DIRECTORY = "src/main/webapp/images/";
 	
 	@Property
 	private String fileName;
@@ -35,15 +38,16 @@ public class Index {
 	@InjectPage
 	private ShowImages filesList;
 	
-	public void onValidateFromUploadForm() {
+	public void onValidateFromUploadForm() throws Exception{
         try {
-        	//String uploadedFileName = uploadedFile.getFileName();
         	String fileType = uploadedFile.getContentType();        	
         	
-        	File serverFile = new File(DIRECTORY + fileName);
+        	String formatedFileName = addFileNameFormat(fileName, fileType);
         	
-        	if (!fileType.contains(PERMITTED_TYPE)) {
-        		uploadForm.recordError(messages.get("permittedType"));
+        	File serverFile = new File(IMAGES_DIRECTORY + formatedFileName);
+        	
+        	if (!fileType.contains(PERMITTED_FORMAT)) {
+        		uploadForm.recordError(messages.get("permittedFormat"));
         		return;
         	} 
         	
@@ -54,7 +58,13 @@ public class Index {
         	
         	uploadedFile.write(serverFile);
         	
-        	appServices.uploadImage(fileName, DIRECTORY);
+        	try {
+            	resizeImage(IMAGES_DIRECTORY + formatedFileName);
+        	} catch (Exception e) {
+        		uploadForm.recordError(messages.get("generalResizeException"));
+        	}
+        	
+        	appServices.uploadImage(formatedFileName, IMAGES_DIRECTORY);
             
         } catch (DuplicatedImageNameException e) {
             uploadForm.recordError(messages.get("duplicateNameException"));

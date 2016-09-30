@@ -6,7 +6,6 @@
 <hibernate-configuration>
     <session-factory>
     
-        <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">${jdbcDriver.className}</property>
         <property name="hibernate.connection.url">${testDataSource.url}</property>
         <property name="hibernate.connection.username">${testDataSource.user}</property>
@@ -24,8 +23,6 @@
         <!-- Enable Hibernate's automatic session context management -->
         <property name="current_session_context_class">thread</property>
         
-        
-        <!--  List of persistent classes -->
         <mapping class="org.javaee.imageLoader.model.uploadedImage.UploadedImage" />
         <mapping class="org.javaee.imageLoader.model.modification.Modification" />
     </session-factory>

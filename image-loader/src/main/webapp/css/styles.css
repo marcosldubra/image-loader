@@ -1,0 +1,49 @@
+* {
+	margin:0;
+	padding: 0;
+}
+
+body {
+    font-family: centuryGothic;
+    font-size: 12px;
+    background-color: #dddde0;
+    width: 100%;
+    max-width: 1440px;
+}
+
+.container > h2 {
+	margin: 0 auto;
+    width: 190px;
+}
+
+.images-row {
+	border: solid 1px black;
+}
+
+.images-row img {
+	max-width: 600px;
+	max-height: 600px;
+	margin: 4px;
+}
+
+#top-container h1 {
+	text-decoration: underline;
+	margin: 0 auto;
+    width: 260px;
+}
+
+
+#uploadForm {
+	width: 600px;
+	margin: 0 auto;
+}
+
+#uploadForm input {
+	margin-left: 5px;
+	margin-bottom: 15px;
+}
+
+.window {
+	width: 1030px;
+    margin: 0 auto;
+}

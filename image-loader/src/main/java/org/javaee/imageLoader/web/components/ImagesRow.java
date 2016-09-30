@@ -7,15 +7,27 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.AssetSource;
+import org.apache.tapestry5.annotations.SetupRender;
+
+import static org.javaee.imageLoader.model.util.NamesHandler.*;
 
 public class ImagesRow {
 	@Parameter(required = true)
 	@Property
-	private String imageName;
+	private Long uploadedImageId;
+	
+	@Property
+	private String imageTitle;
 	
 	@Parameter(required = true)
 	@Property
-	private Long uploadedImageId;
+	private String imageName;
+	
+	@Property
+	private String imageName100;
+	
+	@Property
+	private String imageName300;
 	
 	@Inject
 	AssetSource assetSource;
@@ -23,10 +35,13 @@ public class ImagesRow {
 	@Inject
 	private Locale locale;
 	
-	/*public String getImageUrl () {
-		URL assetUrl = assetSource.getContextAsset("/" + imageName, locale).toURL();
-		assetSource.getContextAsset("", locale).getResource().getPath();
-		assetSource.getContextAsset("", locale).
-	    return assetUrl.toString();
-	}*/
+	@SetupRender
+    void initializeValues (){
+		imageTitle = removeFileNameFormat(imageName);
+		imageName100 = removeFileNameFormat(imageName) + "100" 
+				+ "." + getImageFormat(imageName);
+		
+		imageName300 = removeFileNameFormat(imageName) + "300" 
+				+ "." + getImageFormat(imageName);
+	}
 }

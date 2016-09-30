@@ -1,12 +1,12 @@
 <html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
 <t:content>
-    <div>
-    	<a href="#" t:type="PageLink" t:page="ImageDetails" 
-				t:context="${uploadedImageId}">
-	        <img src="${context:/images}/${imageName}100"/>
-	        <img src="${context:/images}/${imageName}300"/>
-	        <img src="${context:/images}/${imageName}"/>
-        </a>
-    </div>
+	<div>
+		<h2>${imageTitle}</h2>
+    	<div class="images-row">
+        	<img src="${context:/images}/${imageName100}"/>
+        	<img src="${context:/images}/${imageName300}"/>
+        	<img src="${context:/images}/${imageName}"/>
+    	</div>
+   </div>
 </t:content>
 </html>
