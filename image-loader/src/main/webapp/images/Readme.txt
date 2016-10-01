@@ -1,0 +1,1 @@
+The uploaded images are been saved in this directory.

@@ -1,19 +1,26 @@
 package org.javaee.imageLoader.model.applicationServices;
 
+import static  org.javaee.imageLoader.model.util.ImageResizer.resizeImage;
+import static org.javaee.imageLoader.model.util.NamesHandler.IMAGES_DIRECTORY;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+
+import org.apache.tapestry5.upload.services.UploadedFile;
+import org.javaee.imageLoader.model.modification.Modification;
+import org.javaee.imageLoader.model.modification.Modification.ModificationType;
+import org.javaee.imageLoader.model.modification.ModificationDao;
+import org.javaee.imageLoader.model.uploadedImage.UploadedImage;
+import org.javaee.imageLoader.model.uploadedImage.UploadedImageDao;
+import org.javaee.modelUtil.exceptions.InstanceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.javaee.modelUtil.exceptions.InstanceNotFoundException;
-
-import java.util.Calendar;
-import java.util.List;
-
-import org.javaee.imageLoader.model.modification.Modification;
-import org.javaee.imageLoader.model.modification.ModificationDao;
-import org.javaee.imageLoader.model.modification.Modification.ModificationType;
-import org.javaee.imageLoader.model.uploadedImage.UploadedImage;
-import org.javaee.imageLoader.model.uploadedImage.UploadedImageDao;
 
 @Service("applicationServices")
 @Transactional
@@ -25,15 +32,33 @@ public class ApplicationServicesImplementation implements ApplicationServices {
 	@Autowired
 	ModificationDao modificationDao;
 	
-	public UploadedImage uploadImage(String imageName, String source) throws DuplicatedImageNameException {
+	@Autowired
+	ServletContext servletContext;
+	
+	public UploadedImage uploadImage(String imageName, UploadedFile uploadedFile) 
+			throws DuplicatedImageNameException, ImageNotResizedException {
+		
+		String absoluteContextPath = servletContext.getRealPath(IMAGES_DIRECTORY);
+		
+		String imagePath = absoluteContextPath + "/" + imageName;
+		
 		try {
 			uploadedImageDao.getImageByName(imageName);
 			throw new DuplicatedImageNameException(imageName);
 		} catch (InstanceNotFoundException e) {
-			UploadedImage image = new UploadedImage (imageName, source);
+			File serverFile = new File(imagePath);
+			uploadedFile.write(serverFile);
+			
+			UploadedImage image = new UploadedImage (imageName, absoluteContextPath);
 			
 			uploadedImageDao.save(image);
 			
+        	try {
+        		resizeImage(imagePath);
+        	} catch (IOException e2) {
+        		throw new ImageNotResizedException(imageName);
+        	}
+
 			return image;
 		}
 	}

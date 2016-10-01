@@ -1,7 +1,6 @@
 package org.javaee.imageLoader.model.util;
 
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +14,7 @@ public class ImageResizer {
     
     private static int MEDIUM = 300;
  
-    public static void resizeImage(String filePath) throws Exception{
+    public static String resizeImage(String filePath) throws IOException {
         BufferedImage toResizeImage = loadImage(filePath);
         
         BufferedImage resizedImage = resize(toResizeImage, SMALL);
@@ -33,9 +32,11 @@ public class ImageResizer {
         finalImageName = partialFilePath + MEDIUM + "." + fileFormat;
         
         saveImage(resizedImage, finalImageName, fileFormat);
+        
+        return finalImageName;
     }
      
-    public static BufferedImage loadImage(String pathName) throws Exception{
+    public static BufferedImage loadImage(String pathName) throws IOException {
         BufferedImage sourceImage = ImageIO.read(new File(pathName));
 
         return sourceImage;

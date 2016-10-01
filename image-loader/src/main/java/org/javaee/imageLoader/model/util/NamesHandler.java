@@ -3,12 +3,19 @@ package org.javaee.imageLoader.model.util;
 public class NamesHandler {
 	
 	public static final String PERMITTED_FORMAT = "image";
-	public static final String IMAGES_DIRECTORY = "src/main/webapp/images/";
+	public static final String IMAGES_DIRECTORY = "/images/";
 	
-	public static String getImageFormat(String imagePath) {
-    	String [] parts = imagePath.split("\\.");
+	public static String getImageFormat(String imagePath) {	
     	
-    	String format = (parts.length >= 2) ? parts[1] : ".jpeg";
+    	String findDot = imagePath.substring(imagePath.length() - 4, imagePath.length());
+    	String format = null;
+    	
+    	if (findDot.contains(".")) {
+    		format = imagePath.substring(imagePath.length() - 3, imagePath.length());
+		}
+    	else {
+    		format = imagePath.substring(imagePath.length() - 4, imagePath.length());
+    	}
     	
     	return format;
     }
@@ -31,8 +38,13 @@ public class NamesHandler {
     }
     
     public static String removeFileNameFormat(String fileName) {
-    	String[] parts = fileName.split("\\.");;
+    	String findDot = fileName.substring(fileName.length() - 4, fileName.length());
     	
-    	return parts[0];
+    	if (findDot.contains(".")) {
+    		return fileName.substring(0, fileName.length() - 4);
+    	}
+    	else {
+    		return fileName.substring(0, fileName.length() - 5);
+    	}
     }
 }

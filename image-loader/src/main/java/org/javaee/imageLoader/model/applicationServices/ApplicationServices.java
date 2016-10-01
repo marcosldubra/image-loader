@@ -5,10 +5,12 @@ import org.javaee.modelUtil.exceptions.InstanceNotFoundException;
 
 import java.util.List;
 
+import org.apache.tapestry5.upload.services.UploadedFile;
+
 public interface ApplicationServices {
 
-	public UploadedImage uploadImage (String imageName, String source)
-		throws DuplicatedImageNameException;
+	public UploadedImage uploadImage (String imageName, UploadedFile uploadFile)
+		throws DuplicatedImageNameException, ImageNotResizedException;
 	
 	public UploadedImage updateImage(long imageId, String newImageName, String source)
 		throws DuplicatedImageNameException, InstanceNotFoundException;

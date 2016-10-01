@@ -2,4 +2,3 @@ target/
 .project
 /.settings
 src/.DS_Store
-src/main/webapp/images/*

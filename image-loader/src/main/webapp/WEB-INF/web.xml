@@ -6,7 +6,7 @@
          	http://xmlns.jcp.org/xml/ns/javaee
 		 	http://xmlns.jcp.org/xml/ns/javaee/web-app_2_5.xsd">
 
-	<display-name>Image Loader</display-name>
+	<display-name>ImageLoader</display-name>
 	
     <context-param>
 		<param-name>tapestry.app-package</param-name>
@@ -18,7 +18,7 @@
     </context-param>
     <context-param>
     	<param-name>tapestry.production-mode</param-name>
-    	<param-value>true</param-value>
+    	<param-value>false</param-value>
     </context-param>
     
     <filter>

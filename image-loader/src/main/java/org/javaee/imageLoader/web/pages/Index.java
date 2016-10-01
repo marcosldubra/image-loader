@@ -12,6 +12,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.upload.services.UploadedFile;
 import org.javaee.imageLoader.model.applicationServices.ApplicationServices;
 import org.javaee.imageLoader.model.applicationServices.DuplicatedImageNameException;
+import org.javaee.imageLoader.model.applicationServices.ImageNotResizedException;
 
 import static  org.javaee.imageLoader.model.util.ImageResizer.resizeImage;
 import static org.javaee.imageLoader.model.util.NamesHandler.*;
@@ -38,37 +39,25 @@ public class Index {
 	@InjectPage
 	private ShowImages filesList;
 	
-	public void onValidateFromUploadForm() throws Exception{
-        try {
-        	String fileType = uploadedFile.getContentType();        	
-        	
-        	String formatedFileName = addFileNameFormat(fileName, fileType);
-        	
-        	File serverFile = new File(IMAGES_DIRECTORY + formatedFileName);
-        	
-        	if (!fileType.contains(PERMITTED_FORMAT)) {
-        		uploadForm.recordError(messages.get("permittedFormat"));
-        		return;
-        	} 
-        	
-        	if(serverFile.exists()) {
-        		uploadForm.recordError(messages.get("alreadyExists"));
-        		return;
-        	}
-        	
-        	uploadedFile.write(serverFile);
-        	
-        	try {
-            	resizeImage(IMAGES_DIRECTORY + formatedFileName);
-        	} catch (Exception e) {
-        		uploadForm.recordError(messages.get("generalResizeException"));
-        	}
-        	
-        	appServices.uploadImage(formatedFileName, IMAGES_DIRECTORY);
-            
-        } catch (DuplicatedImageNameException e) {
-            uploadForm.recordError(messages.get("duplicateNameException"));
-        }
+	public void onValidateFromUploadForm() {
+		
+		String fileType = uploadedFile.getContentType();        	
+    	
+    	String formatedFileName = addFileNameFormat(fileName, fileType);
+    	    	
+    	if (!fileType.contains(PERMITTED_FORMAT)) {
+    		uploadForm.recordError(messages.get("permittedFormat"));
+    		return;
+    	} 
+		
+    	try {
+    		appServices.uploadImage(formatedFileName, uploadedFile);
+    	} catch (DuplicatedImageNameException e) {
+    		uploadForm.recordError(messages.get("duplicateNameException"));
+    		return;
+    	} catch (ImageNotResizedException e2) {
+    		uploadForm.recordError(messages.get("generalResizeException"));
+    	}
     }
 
     public Object onUploadException(FileUploadException e) {
